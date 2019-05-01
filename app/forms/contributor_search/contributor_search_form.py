@@ -6,7 +6,7 @@ from flask import request, Blueprint, redirect, url_for, render_template
 
 
 from app.utilities.helpers import create_form_class, create_new_dict, clean_search_parameters, build_uri, build_links
-from app.setup import eureka_configuration
+#from app.setup import eureka_configuration
 
 contributor_search_blueprint = Blueprint(name='contributor_search',
                                          import_name=__name__,
@@ -60,7 +60,7 @@ def general_search_screen():
         if "nextButton" in request.form:
             button_value = request.form['nextButton']
             url_connect = button_value.split('/')[-1]
-            data = eureka_configuration.contributor_search(url_connect)
+           # data = eureka_configuration.contributor_search(url_connect)
 
             output_data = json.loads(data)
             links = output_data['links']
@@ -96,7 +96,7 @@ def general_search_screen():
         if "prevButton" in request.form:
             button_value = request.form['prevButton']
             url_connect = button_value.split('/')[-1]
-            data = eureka_configuration.contributor_search(url_connect)
+           # data = eureka_configuration.contributor_search(url_connect)
 
             output_data = json.loads(data)
             links = output_data['links']
@@ -133,7 +133,7 @@ def general_search_screen():
         if "firstButton" in request.form:
             button_value = request.form['firstButton']
             url_connect = button_value.split('/')[-1]
-            data = eureka_configuration.contributor_search(url_connect)
+           # data = eureka_configuration.contributor_search(url_connect)
 
             output_data = json.loads(data)
             links = output_data['links']
@@ -170,7 +170,7 @@ def general_search_screen():
         if "lastButton" in request.form:
             button_value = request.form['lastButton']
             url_connect = button_value.split('/')[-1]
-            data = eureka_configuration.contributor_search(url_connect)
+           # data = eureka_configuration.contributor_search(url_connect)
 
             output_data = json.loads(data)
             links = output_data['links']
@@ -214,64 +214,65 @@ def general_search_screen():
         # is made, the url is passed over to the Persistence layer
 
         try:
-            data = eureka_configuration.contributor_search(url_connect)
+           # data = eureka_configuration.contributor_search(url_connect)
+            pass
 
         except URLError as error:
             return render_template('./contributor_search/no_eureka_server.html', error_message=error)
 
         # take the JSON string and turn is into a Python object, the resulting object should be a list of dictionaries
         # Extracting content and links for pagination
-        output_data = json.loads(data)
-        print(output_data)
-        links = output_data['links']
-        content = output_data['content']
+       # output_data = json.loads(data)
+        #print(output_data)
+       # links = output_data['links']
+        #content = output_data['content']
 
         # Remove individual links key from dictionary as this is blank and not needed on results table
-        for i in content:
-            del i['links']
+        # for i in content:
+        #     del i['links']
 
-        page_info = output_data['page']
+       # page_info = output_data['page']
 
-        total_records = page_info['totalElements']
-        current_page = page_info['number']
-        last_page = page_info['totalPages'] - 1
-
-        print("Current Page: " + str(current_page))
-
-        first_link = build_links(links, 'first')
-        next_link = build_links(links, 'next')
-        prev_link = build_links(links, 'prev')
-        last_link = build_links(links, 'last')
-
-        print(len(content))
-
-        # Check if the python object does not contains the key "error" and if the length of the list is > 0
-        # This means that there have been no errors and the query returned at least one result
-        if 'error' not in content and content:
-            return render_template("./contributor_search/GeneralSearchScreen.html", next_url=next_link, form=form,
-                                   prev_url=prev_link,
-                                   first_url=first_link,
-                                   last_url=last_link,
-                                   total_records=total_records,
-                                   current_page=current_page,
-                                   last_page=last_page,
-                                   records=content,
-                                   header=content[0],
-                                   fields=dict(form.__dict__['_fields']))
-
-        # Now check that the object doesn't contain the key "error" and if the length of the list is 0
-        # This means that there have been no errors and the query returned no results
-        if 'error' not in content and not content:
-            current_page = -1
-            return render_template("./contributor_search/GeneralSearchScreen.html", form=form,
-                                   fields=dict(form.__dict__['_fields']), message="No results found",
-                                   current_page=current_page,
-                                   last_page=last_page,)
-
-        # If the two above checks failed, then the query must have returned an error
-        dummy_list = [content]
-        return render_template("./contributor_search/GeneralSearchScreen.html", form=form, records=dummy_list,
-                               fields=dict(form.__dict__['_fields']))
+        # total_records = page_info['totalElements']
+        # current_page = page_info['number']
+        # last_page = page_info['totalPages'] - 1
+        #
+        # print("Current Page: " + str(current_page))
+        #
+        # first_link = build_links(links, 'first')
+        # next_link = build_links(links, 'next')
+        # prev_link = build_links(links, 'prev')
+        # last_link = build_links(links, 'last')
+        #
+        # print(len(content))
+        #
+        # # Check if the python object does not contains the key "error" and if the length of the list is > 0
+        # # This means that there have been no errors and the query returned at least one result
+        # if 'error' not in content and content:
+        #     return render_template("./contributor_search/GeneralSearchScreen.html", next_url=next_link, form=form,
+        #                            prev_url=prev_link,
+        #                            first_url=first_link,
+        #                            last_url=last_link,
+        #                            total_records=total_records,
+        #                            current_page=current_page,
+        #                            last_page=last_page,
+        #                            records=content,
+        #                            header=content[0],
+        #                            fields=dict(form.__dict__['_fields']))
+        #
+        # # Now check that the object doesn't contain the key "error" and if the length of the list is 0
+        # # This means that there have been no errors and the query returned no results
+        # if 'error' not in content and not content:
+        #     current_page = -1
+        #     return render_template("./contributor_search/GeneralSearchScreen.html", form=form,
+        #                            fields=dict(form.__dict__['_fields']), message="No results found",
+        #                            current_page=current_page,
+        #                            last_page=last_page,)
+        #
+        # # If the two above checks failed, then the query must have returned an error
+        # dummy_list = [content]
+        # return render_template("./contributor_search/GeneralSearchScreen.html", form=form, records=dummy_list,
+        #                        fields=dict(form.__dict__['_fields']))
 
     # before any searches are done, return just the webpage with the search fields.
     return render_template("./contributor_search/GeneralSearchScreen.html",

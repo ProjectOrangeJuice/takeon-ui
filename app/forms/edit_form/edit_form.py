@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, request, render_template, redirect, url_for
-from app.setup import eureka_configuration
+#from app.setup import eureka_configuration
 from app.utilities.helpers import decompose_data, build_uri, build_json, get_user, forms_connect_to_eureka, \
                                   forms_connect_to_eureka_validation, build_uri_2
 
@@ -22,7 +22,7 @@ def edit_form(inqcode, period, ruref):
     question_definition, contributor_details, form_responses = forms_connect_to_eureka(url_connect)
     validations_output = forms_connect_to_eureka_validation(pl_url_connect)
     # update contributor table to lock the form for editing
-    eureka_configuration.update_locked_status(url_connect, data={"lockedBy": get_user()})
+   # eureka_configuration.update_locked_status(url_connect, data={"lockedBy": get_user()})
 
     # load the json to turn it into a usable form
     definition = json.loads(question_definition)
@@ -67,10 +67,10 @@ def edit_form(inqcode, period, ruref):
 
             # Send the data to the business layer for processing
             print("total json: {}".format(str(response_data)))
-            eureka_configuration.update_response(url_connect, response_data)
+          #  eureka_configuration.update_response(url_connect, response_data)
 
             # Get the refreshed data from the responses table
-            form_responses = eureka_configuration.form_response(url_connect)
+          #  form_responses = eureka_configuration.form_response(url_connect)
             form_response = json.loads(form_responses)
 
             # Render the responses
@@ -79,7 +79,7 @@ def edit_form(inqcode, period, ruref):
                                    validation=validations_output)
         # If the form doesn't have saveForm, then the exit button must have been pressed
         # Update the contributor table to unlock the form
-        eureka_configuration.update_locked_status(url_connect, data={"lockedBy": ""})
+       # eureka_configuration.update_locked_status(url_connect, data={"lockedBy": ""})
         # return the user to the view form screen
         return redirect(url_for("view_form.view_form", ruref=ruref, inqcode=inqcode,
                                 period=period))
